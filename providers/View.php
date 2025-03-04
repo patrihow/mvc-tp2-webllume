@@ -8,9 +8,8 @@ class View {
     static public function render($template, $data = []){
         $loader = new FilesystemLoader('views');
         $twig = new Environment($loader);
-        $twig->addGlobal('asset', ASSET);
+        $twig->addGlobal('assets', ASSET);
         $twig->addGlobal('base', BASE);
-        $twig->addGlobal('uploads', IMAGES);
         echo $twig->render($template.".php", $data);
     }
 

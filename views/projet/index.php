@@ -1,34 +1,38 @@
-{{ include('layouts/header.php', {title:'Projets'})}}
-<h1>Clients</h1>
-<table>
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Address</th>
-            <th>Phone</th>
-            <th>Email</th>
-            <th>View</th>
-            <th>Delete</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for client in clients %}
-        <tr>
-            <td>{{client.name}}</td>
-            <td>{{client.address}}</td>
-            <td>{{client.phone}}</td>
-            <td>{{client.email}}</td>
-            <td> <a href="{{base}}/client/show?id={{client.id}}" class="btn">View</a></td>
-            <td>
-                <form action="{{base}}/client/delete" method="post">
-                    <input type="hidden" name="id" value="{{client.id}}">
-                    <input type="submit" class="btn red" value="delete">
-                </form>
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
-<br><br>
-<a href="{{base}}/client/create" class="btn">New Client</a>
-{{ include('layouts/footer.php')}}
+{{ include('layouts/header.php', {title: 'Projets'}) }}
+
+<main>
+    <section class="grille">
+        <h2>Mes Projets</h2>
+        {% if projets is empty %}
+            <p>Aucun projet trouvé.</p>
+        {% else %}
+            {% for projet in projets %}
+                <article>
+                    <img src="{{ projet.image|e }}" alt="Projet" />
+                    <div>
+                        <h3>Projet: <a href="projet-show.php?id={{ projet.id|e }}">{{ projet.titre|e }}</a></h3>
+                    </div>
+                    <div>
+                        <ul>
+                            <li>
+                                <strong>Description</strong>:
+                                <p>{{ projet.description|e }}</p>
+                            </li>
+                            <li>
+                                <strong>Année de création</strong>: {{ projet.annee_creation|e }}
+                            </li>
+                            <li>
+                                <strong>Lien vers le site</strong>: <a href="{{ projet.lien_site|e }}">{{ projet.lien_site|e }}</a>
+                            </li>
+                            <li>
+                                <strong>Catégorie</strong>: {{ projet.nom_categorie|e }}
+                            </li>
+                        </ul>
+                    </div>
+                </article>
+            {% endfor %}
+        {% endif %}
+    </section>
+</main>
+
+{{ include('layouts/footer.php') }}

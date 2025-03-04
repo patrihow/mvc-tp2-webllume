@@ -5,5 +5,6 @@ use App\Models\CRUD;
 
 class Privilege extends CRUD{
     protected $table = 'UserPrivileges';
-    protected $primaryKey = 'id';    
+    protected $primaryKey = 'id';
+    protected $fillable = ['nom'];    
 }
