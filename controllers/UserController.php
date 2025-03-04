@@ -7,6 +7,7 @@ use App\Providers\View;
 
 class UserController
 {
+
     public function create()
     {
         return View::render('user/create');
@@ -16,8 +17,8 @@ class UserController
     {
         $validator = new Validator;
 
-        $validator->field('nom', $data['nom'])->required()->max(50)->nom();
-        $validator->field('prenom', $data['prenom'])->required()->max(50)->prenom();
+        $validator->field('nom', $data['nom'])->required()->max(50)->name();
+        $validator->field('prenom', $data['prenom'])->required()->max(50)->name();
         $validator->field('email', $data['email'])->required()->max(70)->email();
         $validator->field('motDePasse', $data['motDePasse'])->required()->min(8)->max(15);
         $validator->field('biographie', $data['biographie'])->max(100)->biographie();
@@ -26,7 +27,7 @@ class UserController
             $user = new User;
 
             $data['mot_de_passe'] = password_hash($data['motDePasse'], PASSWORD_DEFAULT);
-            unset($data['motDePasse']); 
+            unset($data['motDePasse']);
 
             $insert = $user->insert($data);
             if ($insert) {
@@ -44,8 +45,9 @@ class UserController
     {
         if (isset($data['id']) && $data['id'] != null) {
             $user = new User;
+
             if ($selectId = $user->selectId($data['id'])) {
-                return View::render('user/show', ['user' => $selectId]);
+                return View::render('user/show', ['user' => $selectId]); //
             } else {
                 return View::render('error', ['msg' => 'Utilisateur introuvable.']);
             }
@@ -68,24 +70,23 @@ class UserController
 
     public function update($data = [], $get = [])
     {
-        $get = !empty($get) ? $get : $_GET;
+        $get = ! empty($get) ? $get : $_GET;
 
         if (isset($get['id']) && $get['id'] != null) {
             $validator = new Validator;
-            $validator->field('nom', $data['nom'])->required()->max(50)->nom();
-            $validator->field('prenom', $data['prenom'])->required()->max(50)->prenom();
+            $validator->field('nom', $data['nom'])->required()->max(50)->name();
+            $validator->field('prenom', $data['prenom'])->required()->max(50)->name();
             $validator->field('email', $data['email'])->required()->max(70)->email();
-            $validator->field('motDePasse', $data['motDePasse'])->optional()->min(8)->max(15); 
+            $validator->field('motDePasse', $data['motDePasse'])->min(8)->max(15);
             $validator->field('biographie', $data['biographie'])->max(100)->biographie();
 
             if ($validator->isSuccess()) {
                 $user = new User;
 
-                
-                if (!empty($data['motDePasse'])) {
+                if (! empty($data['motDePasse'])) {
                     $data['mot_de_passe'] = password_hash($data['motDePasse'], PASSWORD_DEFAULT);
                 }
-                unset($data['motDePasse']); 
+                unset($data['motDePasse']);
 
                 $update = $user->update($data, $get['id']);
                 if ($update) {
@@ -102,8 +103,8 @@ class UserController
 
     public function delete($data = [])
     {
-        $id = $data['id'];
-        $user = new User;
+        $id     = $data['id'];
+        $user   = new User;
         $delete = $user->delete($id);
         if ($delete) {
             return View::redirect('user/create');

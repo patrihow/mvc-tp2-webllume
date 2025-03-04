@@ -16,12 +16,20 @@
 <nav class="navigation">
     <ul>
         <div>
-            <span class="logo">🚀 WebLlume</span>
+            <span class="logo">
+                <a href="{{base}}/">🌐🌟 WebLlume</a></span>
         </div>
+        
         <li><a href="{{ base }}/projet/create">Créer un Projet</a></li>
         <li><a href="{{ base }}/projet/edit">Modifier un Projet</a></li>
         <li><a href="{{ base }}/projet/show">Voir les Projets</a></li>
         <li><a href="{{ base }}/projet/index">Liste des Projets</a></li> 
+    </ul>
+    <ul>
+        <li>
+            <a href="{{base}}/user/create">Register</a>
+            <a href="{{base}}/user/show?id={{user.id}}">Login</a>
+        </li>
     </ul>
 </nav>
 

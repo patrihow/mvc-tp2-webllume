@@ -62,5 +62,19 @@ class Validator {
         if(!$this->isSuccess()) return $this->errors;
     }
 
+    public function name() {
+        if (!preg_match("/^[a-zA-ZÀ-ÿ '-]+$/", $this->value)) {
+            $this->errors[$this->key] = "$this->name doit contenir uniquement des lettres!";
+        }
+        return $this;
+    }
+
+    public function biographie() {
+        if (strlen($this->value) > 100) {
+            $this->errors[$this->key] = "$this->name doit être inférieur à 100 caractères!";
+        }
+        return $this;
+    }
+
 }
 
