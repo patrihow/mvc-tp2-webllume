@@ -1,0 +1,23 @@
+.table-section {
+  margin-top: var(--spacing-broad);
+}
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th {
+  background-color: var(--couleur-principale);
+  color: var(--fond-clair);
+  text-align: left;
+  padding: 10px;
+}
+
+td {
+  border: 1px solid var(--couleur-accent);
+  padding: 10px;
+}
+
+tr:nth-child(even) {
+  background-color: var(--fond-clair);
+}

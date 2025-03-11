@@ -1,0 +1,17 @@
+/* Estilo para el Botón de Borrar */
+.bouton-delete {
+    background-color: var(--couleur-rouge-light); 
+    color: var(--couleur-rouge-hover); 
+    border: 2px solid var(--couleur-rouge); 
+    padding: var(--spacing-thinnest) var(--spacing-thinner);
+    border-radius: 5px;
+    font-weight: 500;
+    text-align: center;
+    text-decoration: none;
+}
+
+.bouton-delete:hover {
+    background-color: var(--couleur-rouge-hover); 
+    border: 2px solid var(--couleur-rouge-hover); 
+    color: var(--couleur-rouge-light);
+}

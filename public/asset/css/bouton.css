@@ -1,0 +1,21 @@
+.bouton {
+  display: inline-block;
+  padding: var(--spacing-thinnest) var(--spacing-thinner);
+  border-radius: 5px;
+  text-align: center;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background-color 0.3s, color 0.3s;
+  margin-right: var(--spacing-thinnest);
+}
+
+.bouton {
+  background-color: var(--couleur-secondaire);
+  color: white;
+  border: 2px solid var(--couleur-secondaire);
+}
+
+.bouton:hover {
+  background-color: var(--couleur-accent);
+  color: white;
+}

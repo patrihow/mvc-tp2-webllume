@@ -1,0 +1,38 @@
+:root {
+  --couleur-principale: #240046;
+  --couleur-secondaire: #9d4edd;
+  --couleur-tertiaire: #e7c6ff;
+  --couleur-accent: #5a189a;
+
+  --fond-clair: #f0e6ef;
+  --fond-medio: #b8bedd;
+
+  --couleur-rouge: #c60a0a; /* Rouge bouton-delete */
+  --couleur-rouge-hover: #a60a0a;
+  --couleur-rouge-light: #f8dfdf;
+
+  /* --- Font family ---*/
+  --font-base: "Poppins", sans-serif;
+  --interlignage: 1.5625em;
+
+  /*============================ */
+  /* = SPACING */
+  /*============================ */
+  --spacing-pico: 0.1rem;
+  --spacing-nano: 0.3rem;
+  --spacing-micro: 0.5rem;
+  /*--- */
+  --spacing-thinnest: 1rem;
+  --spacing-thinner: 1.5rem;
+  --spacing-thin: 2rem;
+  --spacing-broad: 4rem;
+  --spacing-broader: 6rem;
+  --spacing-broadest: 8rem;
+  --spacing-large: 10rem;
+  --spacing-larger: 12rem;
+  --spacing-largest: 16rem;
+  /*--- */
+  --spacing-mega: 24rem;
+  --spacing-giga: 54rem;
+  --spacing-tera: 78rem;
+}

@@ -1,0 +1,10 @@
+.error-message {
+    width: 100%;
+    display: inline-block;
+    padding: var(--spacing-micro) var(--spacing-thinnest);
+    background-color: var(--couleur-rouge-light);
+    border-radius: 5px;
+    border: var(--couleur-rouge-hover) 2px solid;
+    font-size: 0.9em;
+    color: var(--couleur-rouge-hover);
+}

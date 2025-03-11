@@ -1,0 +1,46 @@
+:root {
+  font-family: var(--font-base);
+  font-weight: 300;
+  color: var(--couleur-principale);
+}
+
+*,
+*:before {
+  font-family: inherit;
+  font-weight: inherit;
+}
+
+body {
+  margin: 0;
+  background-color: var(--fond-clair);
+}
+
+body > footer {
+  margin-top: var(--spacing-thin);
+}
+nav * {
+  text-decoration: none;
+}
+main {
+  padding: var(--spacing);
+  flex-grow: 1;
+  
+}
+
+img {
+  max-width: 100%;
+}
+nav a:active,
+button:active {
+  transform: translateY(1px) scale(0.98);
+}
+nav ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+p {
+  line-height: 1.6em;
+}
+strong {
+  font-weight: 600;
+}
