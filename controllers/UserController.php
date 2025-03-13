@@ -25,15 +25,17 @@ class UserController
     {
         $validator = new Validator;
 
-        $validator->field('email', $data['email'])->required()->max(70)->email();
-        $validator->field('mot_de_passe', $data['mot_de_passe'])->required()->min(6)->max(100);
-        $validator->field('nom', $data['nom'])->required()->min(2)->max(50);
-        $validator->field('prenom', $data['prenom'])->required()->min(2)->max(50);
-        $validator->field('user_privileges_id', $data['user_privileges_id'])->required();
+        $validator->field('nom', $data['nom'] ?? '')->required()->min(2)->max(50);
+        $validator->field('prenom', $data['prenom'] ?? '')->required()->min(2)->max(50);
+        $validator->field('email', $data['email'] ?? '')->required()->max(70)->email();
+        $validator->field('mot_de_passe', $data['mot_de_passe'] ?? '')->required()->min(6)->max(100);
+        $validator->field('biographie', $data['biographie'] ?? '')->max(200); 
+        $validator->field('photo_profil', $data['photo_profil'] ?? '')->max(200); 
+        $validator->field('user_privileges_id', $data['user_privileges_id'] ?? '')->required();
 
         $privilege = new Privilege;
         $selectPrivilege = $privilege->select(); 
-        
+
         if ($validator->isSuccess()) {
             $user = new User;
             $data['mot_de_passe'] = $user->hashPassword($data['mot_de_passe']); 
@@ -84,10 +86,13 @@ class UserController
         if (isset($get['id']) && $get['id'] != null) {
             $validator = new Validator;
 
-            $validator->field('email', $data['email'])->required()->max(70)->email();
-            $validator->field('mot_de_passe', $data['mot_de_passe'])->required()->min(6)->max(100);
-            $validator->field('nom', $data['nom'])->required()->min(2)->max(50);
-            $validator->field('prenom', $data['prenom'])->required()->min(2)->max(50);
+            $validator->field('nom', $data['nom'] ?? '')->required()->min(2)->max(50);
+            $validator->field('prenom', $data['prenom'] ?? '')->required()->min(2)->max(50);
+            $validator->field('email', $data['email'] ?? '')->required()->max(70)->email();
+            $validator->field('mot_de_passe', $data['mot_de_passe'] ?? '')->required()->min(6)->max(100);
+            $validator->field('biographie', $data['biographie'] ?? '')->max(200); 
+            $validator->field('photo_profil', $data['photo_profil'] ?? '')->max(200);
+            $validator->field('user_privileges_id', $data['user_privileges_id'] ?? '')->required();
 
             if ($validator->isSuccess()) {
                 $user = new User;
