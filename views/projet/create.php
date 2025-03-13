@@ -64,7 +64,7 @@
         </div>
 
         <div class="form-group">
-            <button type="submit" class="form -button" name="nouvelleProduction" value="Publier">Publier</button>
+            <button type="submit" class="bouton" name="nouvelleProduction" value="Publier">Publier</button>
         </div>
     </form>
 </section>

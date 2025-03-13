@@ -1,18 +1,19 @@
-{{ include('layouts/header.php', {title: 'Projets'}) }}
+{{ include('layouts/header.php', {title: 'Mes Projets'}) }}
 
-
-<section class="table-section">
-<h2 class="section-title">Liste de projets</h2>
-
-<table>
+<main>
+    <section class="table-section">
+        <h2>Mes Projets</h2>
+        <table class="table">
             <thead>
                 <tr>
                     <th>Titre</th>
                     <th>Description</th>
                     <th>Année de Création</th>
                     <th>Lien du Site</th>
-                    <th>Catégorie</th>
-                    <th>Actions</th>
+                    <th>Modifier</th>
+                    {% if session.privilege_id == 1 %}
+                    <th>Supprimer</th>
+                    {% endif %}
                 </tr>
             </thead>
             <tbody>
@@ -23,25 +24,27 @@
                 {% else %}
                     {% for projet in projets %}
                     <tr>
-                        <td>{{ projet.titre|e }}</td>
+                        <td><a href="{{ BASE }}/projet/show?id={{ projet.id|e }}">{{ projet.titre|e }}</a></td>
                         <td>{{ projet.description|e }}</td>
                         <td>{{ projet.annee_creation|e }}</td>
                         <td><a href="{{ projet.lien_site|e }}" target="_blank">Voir le site</a></td>
-                        <td>{{ projet.nom_categorie|e }}</td>
                         <td>
-                            <a class="button" href="/projet/edit?id={{ projet.id|e }}">Modifier</a>
-                            <form action="/projet/delete" method="post" style="display:inline;">
+                            <a href="{{ BASE }}/projet/edit?id={{ projet.id|e }}" class="bouton">Modifier</a>
+                        </td>
+                        {% if session.privilege_id == 1 %}
+                        <td>
+                            <form action="{{ BASE }}/projet/delete" method="post" class="form-delete">
                                 <input type="hidden" name="id" value="{{ projet.id|e }}">
-                                <button type="submit" class="button red" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce projet ?');">Supprimer</button>
+                                <input type="submit" class="bouton-delete" value="Supprimer">
                             </form>
                         </td>
+                        {% endif %}
                     </tr>
                     {% endfor %}
                 {% endif %}
             </tbody>
         </table>
-
-</section>
-
+    </section>
+</main>
 
 {{ include('layouts/footer.php') }}
