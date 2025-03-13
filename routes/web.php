@@ -1,5 +1,8 @@
 <?php
 
+use App\Controllers\UserController;
+use App\Controllers\ProjetController;
+use App\Controllers\AuthController;
 use App\Routes\Route;
 
 Route::get('/user/create', 'UserController@create');
@@ -9,7 +12,8 @@ Route::get('/user/edit', 'UserController@edit');
 Route::post('/user/edit', 'UserController@update');
 Route::post('/user/delete', 'UserController@delete');
 
-Route::get('/', 'ProjetController@index');
+Route::get('/', 'AuthController@index'); 
+
 Route::get('/projet/show', 'ProjetController@show');
 Route::get('/projet/create', 'ProjetController@create');
 Route::post('/projet/create', 'ProjetController@store');

@@ -5,17 +5,23 @@ use App\Models\Projet;
 use App\Models\User;
 use App\Providers\Validator;
 use App\Providers\View;
+use App\Providers\Auth;
 
 class ProjetController
 {
+    public function __construct()
+    {
+        Auth::history(); 
+    }
+
     public function index()
     {
         $projets = $this->getAllProjets();
         $user    = new User;
 
         foreach ($projets as $key => $oneProjet) {
-            $prenomUser                    = $user->selectId($oneProjet['user_id']);
-            $projets[$key]['prenomUser  '] = $prenomUser['prenom'];
+            $prenomUser                      = $user->selectId($oneProjet['user_id']);
+            $projets[$key]['prenomUser '] = $prenomUser ['prenom'];
         }
 
         return View::render('projet/index', ['projets' => $projets]);
@@ -32,7 +38,7 @@ class ProjetController
 
     public function create()
     {
-        $get = ! empty($_GET) ? $_GET : [];
+        $get = !empty($_GET) ? $_GET : [];
 
         if (isset($get['id']) && $get['id'] != null) {
             $user = new User;
@@ -53,15 +59,29 @@ class ProjetController
         $validator->field('titre', $data['titre'])->required()->max(150);
         $validator->field('description', $data['description'])->required();
         $validator->field('annee_creation', $data['annee_creation'])->required()->number();
-        $validator->field('lien_site', $data['lien_site'])->required()->max(255); // Cambiado a texto
+        $validator->field('lien_site', $data['lien_site'])->required()->max(255);
 
-        $get      = ! empty($_GET) ? $_GET : [];
+        $get      = !empty($_GET) ? $_GET : [];
         $user     = new User;
         $selectId = $user->selectId($get['id']);
 
         if ($validator->isSuccess()) {
             $data['user_id']      = $get['id'];
             $data['categorie_id'] = $data['categorie_id'];
+
+            // Manejo de la imagen
+            if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
+                $folderUpload = UPLOADS; 
+                $target_file  = $folderUpload . basename($_FILES["image"]["name"]);
+                $data['image'] = basename($_FILES['image']['name']);
+                
+                // Mover la imagen
+                if (!move_uploaded_file($_FILES['image']['tmp_name'], $target_file)) {
+                    return View::render('error', ['msg' => 'Erreur lors de l\'upload de l\'image.']);
+                }
+            } else {
+                $data['image'] = null; 
+            }
 
             $projet     = new Projet;
             $insertData = $projet->insert($data);
@@ -78,7 +98,7 @@ class ProjetController
 
     public function show()
     {
-        $get = ! empty($_GET) ? $_GET : [];
+        $get = !empty($_GET) ? $_GET : [];
 
         if (isset($get['id']) && $get['id'] != null) {
             $projet = new Projet;
@@ -86,7 +106,7 @@ class ProjetController
             if ($selectId = $user->selectId($get['id'])) {
                 $projets = $projet->selectAllById($get['id'], 'user_id', 'id', 'DESC');
                 return View::render('projet/show', ['user' => $selectId, 'projets' => $projets]);
-            } else {
+ } else {
                 return View::render('error', ['msg' => 'Utilisateur non trouvé']);
             }
         } else {
@@ -100,8 +120,8 @@ class ProjetController
             $projet = new Projet;
             if ($selectProjet = $projet->selectId($data['id'])) {
                 $user       = new User;
-                $selectUser = $user->selectId($selectProjet['user_id']);
-                return View::render('projet/edit', ['projet' => $selectProjet, 'user' => $selectUser]);
+                $selectUser   = $user->selectId($selectProjet['user_id']);
+                return View::render('projet/edit', ['projet' => $selectProjet, 'user' => $selectUser  ]);
             } else {
                 return View::render('error', ['msg' => 'Projet non trouvé.']);
             }
@@ -111,20 +131,31 @@ class ProjetController
 
     public function update($data = [], $get = [])
     {
-        $get = ! empty($get) ? $get : [];
+        $get = !empty($get) ? $get : [];
 
         if (isset($get['id']) && $get['id'] != null) {
             $validator = new Validator;
             $validator->field('titre', $data['titre'])->required()->max(150);
             $validator->field('description', $data['description'])->required();
             $validator->field('annee_creation', $data['annee_creation'])->required()->number();
-            $validator->field('lien_site', $data['lien_site'])->required()->max(255); // Cambiado a texto
+            $validator->field('lien_site', $data['lien_site'])->required()->max(255);
 
             $user       = new User;
-            $selectUser = $user->selectId($data['user_id']);
+            $selectUser   = $user->selectId($data['user_id']);
 
             if ($validator->isSuccess()) {
                 $projet = new Projet;
+
+                
+                if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
+                    $folderUpload = UPLOADS; 
+                    $target_file  = $folderUpload . basename($_FILES["image"]["name"]);
+                    $data['image'] = basename($_FILES['image']['name']);
+                    if (!move_uploaded_file($_FILES['image']['tmp_name'], $target_file)) {
+                        return View::render('error', ['msg' => 'Erreur lors de l\'upload de l\'image.']);
+                    }
+                }
+
                 $update = $projet->update($data, $get['id']);
                 if ($update) {
                     return View::redirect('projet/show?id=' . $data['user_id']);
@@ -133,7 +164,7 @@ class ProjetController
                 }
             } else {
                 $errors = $validator->getErrors();
-                return View::render('projet/edit', ['errors' => $errors, 'projet' => $data, 'user' => $selectUser]);
+                return View::render('projet/edit', ['errors' => $errors, 'projet' => $data, 'user' => $selectUser  ]);
             }
         }
     }
@@ -143,9 +174,9 @@ class ProjetController
         $projet     = new Projet;
         $delete     = $projet->delete($data['id']);
         $user       = new User;
-        $selectUser = $user->selectId($data['user_id']);
+        $selectUser   = $user->selectId($data['user_id']);
         if ($delete) {
-            return View::redirect('projet/show?id=' . $data['user_id'], ['user' => $selectUser]);
+            return View::redirect('projet/show?id=' . $data['user_id'], ['user' => $selectUser  ]);
         } else {
             return View::render('error', ['msg' => 'Le projet n\'a pas pu être supprimé.']);
         }

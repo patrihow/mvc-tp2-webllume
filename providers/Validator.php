@@ -3,7 +3,6 @@ namespace App\Providers;
 
 class Validator
 {
-
     private $errors = [];
     private $key;
     private $value;
@@ -13,18 +12,14 @@ class Validator
     {
         $this->key   = $key;
         $this->value = $value;
-        if ($name == null) {
-            $this->name = ucfirst($key);
-        } else {
-            $this->name = ucfirst($name);
-        }
+        $this->name  = $name ? ucfirst($name) : ucfirst($key);
         return $this;
     }
 
     public function required()
     {
         if (empty($this->value)) {
-            $this->errors[$this->key] = "$this->name is required!";
+            $this->errors[$this->key] = "$this->name est requis";
         }
         return $this;
     }
@@ -32,7 +27,7 @@ class Validator
     public function max($length)
     {
         if (strlen($this->value) > $length) {
-            $this->errors[$this->key] = "$this->name must be less than $length characters!";
+            $this->errors[$this->key] = "$this->name doit avoir moins de $length caractères";
         }
         return $this;
     }
@@ -40,53 +35,26 @@ class Validator
     public function min($length)
     {
         if (strlen($this->value) < $length) {
-            $this->errors[$this->key] = "$this->name must be more than $length characters!";
+            $this->errors[$this->key] = "$this->name doit avoir plus de $length caractères";
         }
         return $this;
     }
 
     public function number()
     {
-        if (! empty($this->value) && ! is_numeric($this->value)) {
-            $this->errors[$this->key] = "$this->name must be a number!";
+        if (!empty($this->value) && !is_numeric($this->value)) {
+            $this->errors[$this->key] = "$this->name doit être un nombre";
         }
         return $this;
     }
 
     public function email()
     {
-        if (! empty($this->value) && ! filter_var($this->value, FILTER_VALIDATE_EMAIL)) {
-            $this->errors[$this->key] = "$this->name invalid!";
+        if (!empty($this->value) && !filter_var($this->value, FILTER_VALIDATE_EMAIL)) {
+            $this->errors[$this->key] = "Le format de $this->name est invalide";
         }
         return $this;
     }
-
-    // public function uploadImage() {
-
-    //     if($this->value["fileToUpload"]["error"] == 1) {
-    // 		$this->errors[$this->key]="Veuillez remettre une image";
-    // 		return $this;
-    // 	};
-
-    // 	$target_file = TELECHARGEMENT . basename($this->value["fileToUpload"]["name"]);
-    // 	$imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
-
-    // 	$check = getimagesize($this->value["fileToUpload"]["tmp_name"]);
-    // 	if($check == false) {
-    // 		$this->errors[$this->key]="Veuillez utiliser $this->name valide.";
-    // 	};
-
-    // 	if ($this->value["fileToUpload"]["size"] > 1800000) {
-    // 		$this->errors[$this->key]="Veuillez prendre une image plus petite";
-    // 	}
-
-    // 	if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
-    // 	&& $imageFileType != "gif" && $imageFileType != "webp") {
-    // 		$this->errors[$this->key]="Seul les JPG, JPEG, PNG & GIF sont acceptés";
-    // 	}
-
-    // 	return $this;
-    // }
 
     public function unique($model)
     {
@@ -101,18 +69,11 @@ class Validator
 
     public function isSuccess()
     {
-        if (empty($this->errors)) {
-            return true;
-        }
-
+        return empty($this->errors);
     }
 
     public function getErrors()
     {
-        if (! $this->isSuccess()) {
-            return $this->errors;
-        }
-
+        return $this->isSuccess() ? [] : $this->errors;
     }
-
 }
